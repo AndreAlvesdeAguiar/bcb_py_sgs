@@ -1,0 +1,21 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+def bcb(codigo):
+    link = f'https://api.bcb.gov.br/dados/serie/bcdata.sgs.{codigo}/dados?formato=json'
+    df = pd.read_json(link)
+    df.index = pd.to_datetime(df['data'])
+    df = df['valor']
+    return df
+
+
+CUB = bcb(1653)
+
+CUB.to_excel('/home/andre/Documentos/python_estudos/CUB.xlsx')
+
+plt.plot(CUB.index, CUB.values)
+plt.title('Índice CUB')
+plt.xlabel('Data')
+plt.ylabel('Valor')
+plt.show()
